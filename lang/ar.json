@@ -5,5 +5,10 @@
     "Management": "الإدارة",
     "Products": "المنتجات",
     "Product": "المنتج",
-    "Add a new product": "إضافة منتج جديد"
+    "Add a new product": "إضافة منتج جديد",
+    "Create Customer": "إنشاء زبون",
+    "Customers": "زبائن",
+    "Customer": "زبون",
+    "Email": "البريد الإلكتروني",
+    "Phone": "الهاتف"
 }
