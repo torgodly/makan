@@ -10,5 +10,13 @@
     "Customers": "زبائن",
     "Customer": "زبون",
     "Email": "البريد الإلكتروني",
-    "Phone": "الهاتف"
+    "Phone": "الهاتف",
+    "Order": "الفاتورة",
+    "Orders": "الفواتير",
+    "Customer Info": "معلومات الزبون",
+    "Items": "العناصر",
+    "Quantity": "الكمية",
+    "Unit Price": "سعر الوحدة",
+    "Pricing": "التسعير",
+    "Payment method": "طريقة الدفع"
 }

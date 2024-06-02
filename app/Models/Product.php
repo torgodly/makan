@@ -14,4 +14,7 @@ class Product extends Model
         'cost',
         'price',
     ];
+
+
+
 }
