@@ -9,7 +9,10 @@
 
             foreach ($data->items as $item) {
                 $price += $item['price'] * (int) $item['quantity']; // Use += for cumulative addition
+
             }
+            $price -= (float)$data->discount; // Subtract discount from the total price
+
         @endphp
 
 

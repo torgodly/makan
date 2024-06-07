@@ -68,8 +68,8 @@
 
             <section class="flex justify-end mt-5">
                 <div class="text-right">
-                    <p class="text-lg font-bold">المجموع الفرعي: {{$order->total_price . ' د.ل'}}</p>
-                    <p class="text-lg font-bold">الخصم (10%): $25.00</p>
+                    <p class="text-lg font-bold">المجموع الفرعي: {{$order->total_price + $order->discount . ' د.ل'}}</p>
+                    <p class="text-lg font-bold">الخصم: {{$order->discount . ' د.ل'}}</p>
                     <p class="text-xl font-bold">الإجمالي: {{$order->total_price . ' د.ل'}}</p>
                 </div>
             </section>

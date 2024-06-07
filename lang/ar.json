@@ -18,5 +18,8 @@
     "Quantity": "الكمية",
     "Unit Price": "سعر الوحدة",
     "Pricing": "التسعير",
-    "Payment method": "طريقة الدفع"
+    "Payment method": "طريقة الدفع",
+    "Print Invoice": "طباعة الفاتورة",
+    "discount": "خصم",
+    "Note": "ملاحظة"
 }
