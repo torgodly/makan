@@ -21,5 +21,8 @@
     "Payment method": "طريقة الدفع",
     "Print Invoice": "طباعة الفاتورة",
     "discount": "خصم",
-    "Note": "ملاحظة"
+    "Note": "ملاحظة",
+    "Status": "الحالة",
+    "Total Price": "السعر الإجمالي",
+    "Discount": "الخصم"
 }

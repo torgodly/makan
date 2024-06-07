@@ -4,26 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Forms\Components\ViewPrice;
-use App\Models\Customer;
 use App\Models\Order;
-use App\Models\Product;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Infolists\Components\RepeatableEntry;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -62,7 +46,13 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('print')
+                    ->label('Print Invoice')
+                    ->translateLabel()
+                    ->color('secondary')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn (Order $order) => route('print', $order)),
 //                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

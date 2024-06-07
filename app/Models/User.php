@@ -25,6 +25,7 @@ class User extends Authenticatable implements  HasAvatar
         'name',
         'email',
         'password',
+        'type'
     ];
 
     /**
@@ -55,5 +56,11 @@ class User extends Authenticatable implements  HasAvatar
     public function getFilamentAvatarUrl(): ?string
     {
         return $this->avatar_url ? Storage::url($this->avatar_url) : null ;
+    }
+
+    //isAdmin Attribute
+    public function getIsAdminAttribute()
+    {
+        return $this->type === 'admin';
     }
 }

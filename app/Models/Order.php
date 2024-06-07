@@ -128,14 +128,32 @@ class Order extends Model
     public static function Table()
     {
         return [
+            TextColumn::make('order_number')
+                ->label('Order Number')
+                ->translateLabel()
+                ->searchable()
+                ->sortable(),
             TextColumn::make('customer.name')
                 ->label('Customer')
                 ->translateLabel()
                 ->sortable(),
+            TextColumn::make('total_price')
+                ->label('Total Price')
+                ->translateLabel()
+                ->suffix(' د.ل')
+                ->sortable(),
             TextColumn::make('status')
+                ->label('Status')
+                ->translateLabel()
                 ->badge()
                 ->color(fn($record) => $record->status === 'Open' ? 'green' : 'yellow')
                 ->searchable(),
+            TextColumn::make('payment_method')
+                ->label('Payment Method')
+                ->translateLabel()
+                ->badge()
+                ->searchable(),
+
             TextColumn::make('created_at')
                 ->dateTime()
                 ->sortable()
@@ -198,7 +216,25 @@ class Order extends Model
                         ->translateLabel()
                         ->icon('heroicon-s-currency-dollar')
                         ->size('lg')
-                        ->weight(FontWeight::ExtraBold)
+                        ->weight(FontWeight::ExtraBold),
+                    //discount
+                    TextEntry::make('discount')
+                        ->label('Discount')
+                        ->translateLabel()
+                        ->icon('heroicon-s-currency-dollar')
+                        ->size('lg')
+                        ->weight(FontWeight::ExtraBold),
+                ]),
+                //print invoice
+                \Filament\Infolists\Components\Section::make()->schema([
+
+
+                    //note
+                    TextEntry::make('note')
+                        ->label('Note')
+                        ->translateLabel()
+//                        ->icon('heroicon-s-annotation')
+                        ->size('lg')
                 ]),
                 \Filament\Infolists\Components\Section::make()->schema([
                     TextEntry::make('created_at')
@@ -216,9 +252,7 @@ class Order extends Model
 
                 ]),
 
-                //print invoice
-                \Filament\Infolists\Components\Section::make()->schema([
-                ]),
+
             ])->columnSpan(['lg' => 1]),
         ];
     }
