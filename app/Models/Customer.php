@@ -27,10 +27,10 @@ class Customer extends Model
             TextInput::make('email')
                 ->translateLabel()
                 ->email()
-                ->required()
                 ->maxLength(255),
             TextInput::make('phone')
                 ->translateLabel()
+                ->required()
                 ->tel()
                 ->maxLength(255),
         ];
