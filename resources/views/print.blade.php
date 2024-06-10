@@ -66,11 +66,17 @@
                 </x-panel>
             </section>
 
-            <section class="flex justify-end mt-5">
+            <section class="flex justify-between flex-row-reverse mt-5">
                 <div class="text-right">
                     <p class="text-lg font-bold">المجموع الفرعي: {{$order->total_price + $order->discount . ' د.ل'}}</p>
                     <p class="text-lg font-bold">الخصم: {{$order->discount . ' د.ل'}}</p>
                     <p class="text-xl font-bold">الإجمالي: {{$order->total_price . ' د.ل'}}</p>
+                    <p class="text-lg font-bold">المدفوع: {{$order->paid . ' د.ل'}}</p>
+                    <p class="text-lg font-bold">المتبقي: {{$order->total_price - $order->paid . ' د.ل'}}</p>
+                </div>
+
+                <div class="text-left w-1/2 flex justify-center">
+                    <p class="text-base ">الختم والتوقيع</p>
                 </div>
             </section>
 

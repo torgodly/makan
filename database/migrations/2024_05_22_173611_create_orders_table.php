@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,6 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained();
             $table->enum('status', ['Open', 'Finished'])->default('Open');
             $table->foreignId('user_id')->constrained();
-            $table->enum('payment_method', ['Cash', 'Credit Card', 'Bank Transfer'])->default('Cash');
             $table->text('note')->nullable();
             $table->decimal('discount', 10, 2)->default(0);
             $table->timestamps();

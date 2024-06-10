@@ -39,6 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 'green' => Color::Green,
                 'yellow' => Color::Yellow,
                 'blue' => Color::Blue,
+                'orange' => '#FFA500',
             ])
             ->brandLogo(asset('images/logo.png'))
             ->brandLogoHeight('3rem')

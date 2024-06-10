@@ -30,6 +30,13 @@
     "Users": "مستخدمين",
     "Type": "النوع",
     "Create User": "إنشاء مستخدم",
-    "Total Price After Discount": "السعر الإجمالي بعد الخصم",
-    "Change status": "تغيير الحالة"
+    "Total Price After Discount": "السعر بعد الخصم",
+    "Change status": "تغيير الحالة",
+    "Order Number": "رقم الفاتورة",
+    "Add Payment": "إضافة دفعة",
+    "Amount": "المبلغ",
+    "Payment Date": "تاريخ الدفع",
+    "Order Items": "عناصر الفاتورة",
+    "Order payments": "دفعات الفاتورة",
+    "Payment Has Been Paid": "المبلغ تم دفعه"
 }

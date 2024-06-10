@@ -25,7 +25,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'status', 'user_id', 'payment_method', 'order_number', 'note', 'discount'];
+    protected $fillable = ['customer_id', 'status', 'user_id', 'order_number', 'note', 'discount'];
 
 
     //customer
@@ -53,11 +53,6 @@ class Order extends Model
                 ->badge()
                 ->color(fn($record) => $record->status === 'Open' ? 'green' : 'yellow')
                 ->searchable(),
-            TextColumn::make('payment_method')
-                ->label('Payment Method')
-                ->translateLabel()
-                ->badge()
-                ->searchable(),
 
             TextColumn::make('created_at')
                 ->dateTime()
@@ -77,15 +72,17 @@ class Order extends Model
                 \Filament\Infolists\Components\Section::make()->schema([
                     \Filament\Infolists\Components\Grid::make()->schema([
                         TextEntry::make('customer.name')
+                            ->translateLabel()
                             ->icon('heroicon-s-user'),
                         TextEntry::make('order_number')
+                            ->label('Order Number')
+                            ->translateLabel()
                             ->icon('tabler-receipt-2'),
                         TextEntry::make('user.name')
+                            ->translateLabel()
                             ->icon('tabler-user'),
-                        TextEntry::make('payment_method')
-                            ->icon('tabler-credit-card')
-                            ->badge(),
                         TextEntry::make('status')
+                            ->translateLabel()
                             ->icon('tabler-circle-check')
                             ->badge()
                             ->action(\Filament\Infolists\Components\Actions\Action::make('Change Status')
@@ -121,11 +118,10 @@ class Order extends Model
                         ,
                     ])->columns(2),
                 ]),
-//                \Filament\Infolists\Components\Section::make()->schema([
-//                    TextEntry::make('note')
-//                ]),
                 \Filament\Infolists\Components\Section::make()->schema([
                     RepeatableEntry::make('items')
+                        ->label('Order Items')
+                        ->translateLabel()
                         ->schema([
                             \Filament\Infolists\Components\Grid::make()->schema([
                                 TextEntry::make('product.name')
@@ -139,35 +135,65 @@ class Order extends Model
                                     ->label('Total Price')
                                     ->translateLabel(),
                             ])->columns(4)
-                        ])
-
+                        ]),
+                ]),
+                \Filament\Infolists\Components\Section::make()->schema([
+                    RepeatableEntry::make('payments')
+                        ->label('Order payments')
+                        ->translateLabel()
+                        ->schema([
+                            \Filament\Infolists\Components\Grid::make()->schema([
+                                TextEntry::make('payment_method')
+                                    ->label('Payment Method')
+                                    ->translateLabel(),
+                                TextEntry::make('amount')
+                                    ->label('Amount')
+                                    ->translateLabel(),
+                                TextEntry::make('payment_date')
+                                    ->label('Payment Date')
+                                    ->translateLabel(),
+                            ])->columns(3)
+                        ]),
                 ])
             ])->columnSpan(['lg' => 2]),
             \Filament\Infolists\Components\Group::make([
                 \Filament\Infolists\Components\Section::make()->schema([
-                    TextEntry::make('total_price_d')
-                        ->label('Total Price')
-                        ->translateLabel()
-                        ->icon('heroicon-s-currency-dollar')
-                        ->size('lg')
-                        ->weight(FontWeight::ExtraBold)
-                        ->default(fn($record) => $record->total_price + $record->discount)
-                    ,
-                    //discount
-                    TextEntry::make('discount')
-                        ->label('Discount')
-                        ->translateLabel()
-                        ->icon('heroicon-s-currency-dollar')
-                        ->size('lg')
-                        ->weight(FontWeight::ExtraBold),
+                    \Filament\Infolists\Components\Grid::make()->schema([
+                        TextEntry::make('total_price_d')
+                            ->label('Total Price')
+                            ->translateLabel()
+                            ->icon('heroicon-s-currency-dollar')
+                            ->size('lg')
+                            ->weight(FontWeight::ExtraBold)
+                            ->default(fn($record) => $record->total_price + $record->discount)
+                        ,
+                        //discount
+                        TextEntry::make('discount')
+                            ->label('Discount')
+                            ->translateLabel()
+                            ->icon('heroicon-s-currency-dollar')
+                            ->size('lg')
+                            ->weight(FontWeight::ExtraBold),
+                    ]),
 
-                    //total price after discount
-                    TextEntry::make('total_price')
-                        ->label('Total Price After Discount')
-                        ->translateLabel()
-                        ->icon('heroicon-s-currency-dollar')
-                        ->size('lg')
-                        ->weight(FontWeight::ExtraBold)
+                    \Filament\Infolists\Components\Grid::make()->schema([
+                        //total price after discount
+                        TextEntry::make('total_price')
+                            ->label('Total Price After Discount')
+                            ->translateLabel()
+                            ->icon('heroicon-s-currency-dollar')
+                            ->size('lg')
+                            ->weight(FontWeight::ExtraBold),
+
+                        //payment has been paid
+                        TextEntry::make('payment_has_been_paid')
+                            ->label('Payment Has Been Paid')
+                            ->translateLabel()
+                            ->icon('heroicon-s-currency-dollar')
+                            ->size('lg')
+                            ->weight(FontWeight::ExtraBold)
+                            ->default(fn($record) => $record->payments->sum('amount'))
+                    ])
                 ]),
                 //print invoice
                 \Filament\Infolists\Components\Section::make()->schema([
@@ -327,5 +353,23 @@ class Order extends Model
         return $this->items->sum(function ($item) {
                 return $item->quantity * $item->product->price;
             }) - $this->discount;
+    }
+
+    //payments
+    public function payments()
+    {
+        return $this->hasMany(OrderPayment::class);
+    }
+
+    //payment need to be paid
+    public function getPaymentNeedToBePaidAttribute()
+    {
+        return $this->total_price - $this->payments->sum('amount');
+    }
+
+    //paid
+    public function getPaidAttribute()
+    {
+        return $this->payments->sum('amount');
     }
 }
