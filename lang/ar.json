@@ -24,5 +24,12 @@
     "Note": "ملاحظة",
     "Status": "الحالة",
     "Total Price": "السعر الإجمالي",
-    "Discount": "الخصم"
+    "Discount": "الخصم",
+    "Payment Method": "طريقة الدفع",
+    "User": "مستخدم",
+    "Users": "مستخدمين",
+    "Type": "النوع",
+    "Create User": "إنشاء مستخدم",
+    "Total Price After Discount": "السعر الإجمالي بعد الخصم",
+    "Change status": "تغيير الحالة"
 }

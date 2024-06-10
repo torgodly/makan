@@ -29,6 +29,178 @@ class Order extends Model
 
 
     //customer
+
+    public static function Table()
+    {
+        return [
+            TextColumn::make('order_number')
+                ->label('Order Number')
+                ->translateLabel()
+                ->searchable()
+                ->sortable(),
+            TextColumn::make('customer.name')
+                ->label('Customer')
+                ->translateLabel()
+                ->sortable(),
+            TextColumn::make('total_price')
+                ->label('Total Price')
+                ->translateLabel()
+                ->suffix(' د.ل')
+                ->sortable(),
+            TextColumn::make('status')
+                ->label('Status')
+                ->translateLabel()
+                ->badge()
+                ->color(fn($record) => $record->status === 'Open' ? 'green' : 'yellow')
+                ->searchable(),
+            TextColumn::make('payment_method')
+                ->label('Payment Method')
+                ->translateLabel()
+                ->badge()
+                ->searchable(),
+
+            TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    public static function InfoList()
+    {
+        return [
+            \Filament\Infolists\Components\Group::make([
+                \Filament\Infolists\Components\Section::make()->schema([
+                    \Filament\Infolists\Components\Grid::make()->schema([
+                        TextEntry::make('customer.name')
+                            ->icon('heroicon-s-user'),
+                        TextEntry::make('order_number')
+                            ->icon('tabler-receipt-2'),
+                        TextEntry::make('user.name')
+                            ->icon('tabler-user'),
+                        TextEntry::make('payment_method')
+                            ->icon('tabler-credit-card')
+                            ->badge(),
+                        TextEntry::make('status')
+                            ->icon('tabler-circle-check')
+                            ->badge()
+                            ->action(\Filament\Infolists\Components\Actions\Action::make('Change Status')
+                                ->requiresConfirmation()
+                                ->modalIcon('heroicon-m-pencil')
+                                ->translateLabel()
+                                ->icon('heroicon-m-pencil')
+                                ->hiddenLabel()
+                                ->button()
+                                ->fillForm(fn($record) => ['status' => $record->status])
+                                ->form([
+                                    \Filament\Forms\Components\Select::make('status')
+                                        ->translateLabel()
+                                        ->options([
+                                            'Open' => 'Open',
+                                            'Finished' => 'Finished',
+                                        ])
+                                        ->required()
+                                ])
+                                ->action(function (array $data, Order $record) {
+                                    $record->update($data);
+                                    Notification::make()
+                                        ->title(__('Status Changed'))
+                                        ->icon('heroicon-m-check')
+                                        ->iconColor('green')
+                                        ->body(__('The status has been changed successfully.'))
+                                        ->send();
+
+                                })
+
+                            )
+                            ->color(fn($record) => $record->status === 'Open' ? 'green' : 'blue')
+                        ,
+                    ])->columns(2),
+                ]),
+//                \Filament\Infolists\Components\Section::make()->schema([
+//                    TextEntry::make('note')
+//                ]),
+                \Filament\Infolists\Components\Section::make()->schema([
+                    RepeatableEntry::make('items')
+                        ->schema([
+                            \Filament\Infolists\Components\Grid::make()->schema([
+                                TextEntry::make('product.name')
+                                    ->label('Product')
+                                    ->translateLabel(),
+                                TextEntry::make('product.price')
+                                    ->label('Price')
+                                    ->translateLabel(),
+                                TextEntry::make('quantity')->label('Quantity')->translateLabel(),
+                                TextEntry::make('total_price')->default(fn($record) => $record->product->price * $record->quantity)
+                                    ->label('Total Price')
+                                    ->translateLabel(),
+                            ])->columns(4)
+                        ])
+
+                ])
+            ])->columnSpan(['lg' => 2]),
+            \Filament\Infolists\Components\Group::make([
+                \Filament\Infolists\Components\Section::make()->schema([
+                    TextEntry::make('total_price_d')
+                        ->label('Total Price')
+                        ->translateLabel()
+                        ->icon('heroicon-s-currency-dollar')
+                        ->size('lg')
+                        ->weight(FontWeight::ExtraBold)
+                        ->default(fn($record) => $record->total_price + $record->discount)
+                    ,
+                    //discount
+                    TextEntry::make('discount')
+                        ->label('Discount')
+                        ->translateLabel()
+                        ->icon('heroicon-s-currency-dollar')
+                        ->size('lg')
+                        ->weight(FontWeight::ExtraBold),
+
+                    //total price after discount
+                    TextEntry::make('total_price')
+                        ->label('Total Price After Discount')
+                        ->translateLabel()
+                        ->icon('heroicon-s-currency-dollar')
+                        ->size('lg')
+                        ->weight(FontWeight::ExtraBold)
+                ]),
+                //print invoice
+                \Filament\Infolists\Components\Section::make()->schema([
+
+
+                    //note
+                    TextEntry::make('note')
+                        ->label('Note')
+                        ->translateLabel()
+//                        ->icon('heroicon-s-annotation')
+                        ->size('lg')
+                ]),
+                \Filament\Infolists\Components\Section::make()->schema([
+                    TextEntry::make('created_at')
+                        ->label('Created At')
+                        ->translateLabel()
+                        ->icon('heroicon-s-calendar')
+//                        ->size('lg')
+                    ,
+                    TextEntry::make('updated_at')
+                        ->label('Updated At')
+                        ->translateLabel()
+                        ->icon('heroicon-s-calendar')
+//                        ->size('lg')
+                    ,
+
+                ]),
+
+
+            ])->columnSpan(['lg' => 1]),
+        ];
+    }
+
     public static function Form()
     {
         return [
@@ -125,138 +297,6 @@ class Order extends Model
         ];
     }
 
-    public static function Table()
-    {
-        return [
-            TextColumn::make('order_number')
-                ->label('Order Number')
-                ->translateLabel()
-                ->searchable()
-                ->sortable(),
-            TextColumn::make('customer.name')
-                ->label('Customer')
-                ->translateLabel()
-                ->sortable(),
-            TextColumn::make('total_price')
-                ->label('Total Price')
-                ->translateLabel()
-                ->suffix(' د.ل')
-                ->sortable(),
-            TextColumn::make('status')
-                ->label('Status')
-                ->translateLabel()
-                ->badge()
-                ->color(fn($record) => $record->status === 'Open' ? 'green' : 'yellow')
-                ->searchable(),
-            TextColumn::make('payment_method')
-                ->label('Payment Method')
-                ->translateLabel()
-                ->badge()
-                ->searchable(),
-
-            TextColumn::make('created_at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-            TextColumn::make('updated_at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault: true),
-        ];
-    }
-
-    public static function InfoList()
-    {
-        return [
-            \Filament\Infolists\Components\Group::make([
-                \Filament\Infolists\Components\Section::make()->schema([
-                    \Filament\Infolists\Components\Grid::make()->schema([
-                        TextEntry::make('customer.name')
-                            ->icon('heroicon-s-user'),
-                        TextEntry::make('order_number')
-                            ->icon('tabler-receipt-2'),
-                        TextEntry::make('user.name')
-                            ->icon('tabler-user'),
-                        TextEntry::make('payment_method')
-                            ->icon('tabler-credit-card')
-                            ->badge(),
-                        TextEntry::make('status')
-                            ->icon('tabler-circle-check')
-                            ->badge()
-                            ->color(fn($record) => $record->status === 'Open' ? 'green' : 'yellow')
-                        ,
-                    ])->columns(2),
-                ]),
-//                \Filament\Infolists\Components\Section::make()->schema([
-//                    TextEntry::make('note')
-//                ]),
-                \Filament\Infolists\Components\Section::make()->schema([
-                    RepeatableEntry::make('items')
-                        ->schema([
-                            \Filament\Infolists\Components\Grid::make()->schema([
-                                TextEntry::make('product.name')
-                                    ->label('Product')
-                                    ->translateLabel(),
-                                TextEntry::make('product.price')
-                                    ->label('Price')
-                                    ->translateLabel(),
-                                TextEntry::make('quantity')->label('Quantity')->translateLabel(),
-                                TextEntry::make('total_price')->default(fn($record) => $record->product->price * $record->quantity)
-                                    ->label('Total Price')
-                                    ->translateLabel(),
-                            ])->columns(4)
-                        ])
-
-                ])
-            ])->columnSpan(['lg' => 2]),
-            \Filament\Infolists\Components\Group::make([
-                \Filament\Infolists\Components\Section::make()->schema([
-                    TextEntry::make('total_price')
-                        ->label('Total Price')
-                        ->translateLabel()
-                        ->icon('heroicon-s-currency-dollar')
-                        ->size('lg')
-                        ->weight(FontWeight::ExtraBold),
-                    //discount
-                    TextEntry::make('discount')
-                        ->label('Discount')
-                        ->translateLabel()
-                        ->icon('heroicon-s-currency-dollar')
-                        ->size('lg')
-                        ->weight(FontWeight::ExtraBold),
-                ]),
-                //print invoice
-                \Filament\Infolists\Components\Section::make()->schema([
-
-
-                    //note
-                    TextEntry::make('note')
-                        ->label('Note')
-                        ->translateLabel()
-//                        ->icon('heroicon-s-annotation')
-                        ->size('lg')
-                ]),
-                \Filament\Infolists\Components\Section::make()->schema([
-                    TextEntry::make('created_at')
-                        ->label('Created At')
-                        ->translateLabel()
-                        ->icon('heroicon-s-calendar')
-//                        ->size('lg')
-                    ,
-                    TextEntry::make('updated_at')
-                        ->label('Updated At')
-                        ->translateLabel()
-                        ->icon('heroicon-s-calendar')
-//                        ->size('lg')
-                    ,
-
-                ]),
-
-
-            ])->columnSpan(['lg' => 1]),
-        ];
-    }
-
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -285,7 +325,7 @@ class Order extends Model
     public function getTotalPriceAttribute()
     {
         return $this->items->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        }) - $this->discount;
+                return $item->quantity * $item->product->price;
+            }) - $this->discount;
     }
 }
