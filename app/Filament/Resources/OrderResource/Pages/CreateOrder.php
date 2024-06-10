@@ -18,6 +18,24 @@ class CreateOrder extends CreateRecord
 
         $data['order_number'] = 'Invoice-' . Str::PadLeft(Order::query()->count() + 1, 7, '0');
         $data['user_id'] = auth()->id();
+
         return $data;
     }
+
+    protected function afterCreate(): void
+    {
+       if ($this->record->payment_method !== 'Deferred_Payment') {
+
+           $this->record->payments()->create([
+               'payment_date' => now(),
+               'amount' => $this->record->payment_need_to_be_paid,
+               'payment_method' => $this->record->payment_method,
+           ]);
+           $this->record->update([
+                'status' => 'Finished',
+            ]);
+        }
+    }
+
+
 }

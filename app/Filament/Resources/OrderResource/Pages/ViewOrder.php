@@ -51,10 +51,10 @@ class ViewOrder extends ViewRecord
                         Select::make('payment_method')
                             ->translateLabel()
                             ->options([
-                                'Cash' => 'Cash',
-                                'Bank Transfer' => 'Bank Transfer',
-                                'Credit Card' => 'Credit Card',
-                                'Paypal' => 'Paypal',
+                                'Cash' => 'كاش',
+                                'check' => 'شيك',
+                                'credit_card' => 'بطاقة ائتمان',
+                                'other' => 'أخرى',
                             ])
                             ->label('Payment Method')
                             ->rules('required'),

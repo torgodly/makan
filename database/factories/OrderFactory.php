@@ -21,6 +21,15 @@ class OrderFactory extends Factory
             'customer_id' => \App\Models\Customer::factory(),
             'status' => $this->faker->randomElement(['Open', 'Finished']),
             'user_id' => \App\Models\User::factory(),
+            'payment_method' => $this->faker->randomElement(
+                [
+                    'Cash' => 'كاش',
+                    'check' => 'شيك',
+                    'credit_card' => 'بطاقة ائتمان',
+                    'other' => 'أخرى',
+                    'Deferred_Payment' => 'دفع اجل', // دفع اجل
+                ]
+            ),
             'note' => $this->faker->text,
             'discount' => $this->faker->randomFloat(2, 0, 100),
         ];

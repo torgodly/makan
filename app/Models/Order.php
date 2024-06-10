@@ -25,7 +25,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['customer_id', 'status', 'user_id', 'order_number', 'note', 'discount'];
+    protected $fillable = ['customer_id', 'status', 'user_id', 'order_number', 'note', 'discount', 'payment_method'];
 
 
     //customer
@@ -258,9 +258,11 @@ class Order extends Model
                             ->suffixIcon('tabler-credit-card')
                             ->translateLabel()
                             ->options([
-                                'Cash' => 'Cash',
-                                'credit_card' => 'credit_card',
-                                'bank_transfer' => 'bank_transfer',
+                                'Cash' => 'كاش',
+                                'check' => 'شيك',
+                                'credit_card' => 'بطاقة ائتمان',
+                                'other' => 'أخرى',
+                                'Deferred_Payment' => 'دفع اجل', // دفع اجل
                             ])
                             ->required(),
                     ])->columns(2),
