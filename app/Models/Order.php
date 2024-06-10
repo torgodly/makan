@@ -366,7 +366,7 @@ class Order extends Model
     //payment need to be paid
     public function getPaymentNeedToBePaidAttribute()
     {
-        return $this->total_price - $this->payments->sum('amount');
+        return round($this->total_price - $this->payments->sum('amount'), 2);
     }
 
     //paid

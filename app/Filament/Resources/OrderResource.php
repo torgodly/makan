@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 
 class OrderResource extends Resource
@@ -43,8 +44,28 @@ class OrderResource extends Resource
         return $table
             ->columns(Order::Table())
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->translateLabel()
+                    ->native(false)
+                    ->options([
+                        'Open' => 'Open',
+                        'Finished' => 'Finished',
+                    ]),
+                Tables\Filters\SelectFilter::make('customer_id')
+                    ->label('Customer')
+                    ->translateLabel()
+                    ->relationship('customer', 'name')
+                    ->searchable()
+                    ->preload(),
+
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label('User')
+                    ->translateLabel()
+                    ->relationship('user', 'name')
+                    ->searchable()
+                    ->preload(),
+            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\Action::make('print')
@@ -52,7 +73,7 @@ class OrderResource extends Resource
                     ->translateLabel()
                     ->color('secondary')
                     ->icon('heroicon-o-printer')
-                    ->url(fn (Order $order) => route('print', $order)),
+                    ->url(fn(Order $order) => route('print', $order)),
 //                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
