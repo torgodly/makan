@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filament\Resources\OrderResource\Pages\ListOrders;
 use App\Forms\Components\ViewPrice;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
@@ -20,6 +21,7 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -103,6 +105,7 @@ class Order extends Model
                                         ->required()
                                 ])
                                 ->action(function (array $data, Order $record) {
+
                                     $record->update($data);
                                     Notification::make()
                                         ->title(__('Status Changed'))
@@ -373,5 +376,30 @@ class Order extends Model
     public function getPaidAttribute()
     {
         return $this->payments->sum('amount');
+    }
+
+    public function getMonthlyProductQuantities()
+    {
+        $results = $this->items()
+            ->select(
+                'product_id',
+                DB::raw('SUM(quantity) as total_quantity'),
+                DB::raw('MONTH(created_at) as month')
+            )
+            ->groupBy('product_id', 'month')
+            ->with('product:id,name')
+            ->get();
+
+        $productQuantities = [];
+
+        foreach ($results as $result) {
+            $productName = $result->product->name;
+            if (!isset($productQuantities[$productName])) {
+                $productQuantities[$productName] = array_fill(0, 12, 0); // Initialize all months to 0
+            }
+            $productQuantities[$productName][$result->month - 1] = $result->total_quantity; // -1 for zero-based index
+        }
+
+        return $productQuantities;
     }
 }

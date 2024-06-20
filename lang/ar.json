@@ -38,5 +38,9 @@
     "Payment Date": "تاريخ الدفع",
     "Order Items": "عناصر الفاتورة",
     "Order payments": "دفعات الفاتورة",
-    "Payment Has Been Paid": "المبلغ تم دفعه"
+    "Payment Has Been Paid": "المبلغ تم دفعه",
+    "Sales today": "المبيعات اليوم",
+    "Total Sales today": "إجمالي المبيعات اليوم",
+    "Total Cash register balance today": "إجمالي رصيد الكاشير اليوم",
+    "Cash register balance today": "رصيد الكاشير اليوم"
 }
