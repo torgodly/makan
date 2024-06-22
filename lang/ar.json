@@ -42,5 +42,12 @@
     "Sales today": "المبيعات اليوم",
     "Total Sales today": "إجمالي المبيعات اليوم",
     "Total Cash register balance today": "إجمالي رصيد الكاشير اليوم",
-    "Cash register balance today": "رصيد الكاشير اليوم"
+    "Cash register balance today": "رصيد الكاشير اليوم",
+    "Product Name": "اسم المنتج",
+    "Total Sold": "المجموع المباع",
+    "Total Cost": "التكلفة الإجمالية",
+    "This report shows the profit of each product.": "هذا التقرير يظهر الربح من كل منتج",
+    "Profit Report": "تقرير الأرباح",
+    "Date Range": "الفترة",
+    "User Sales Report": "تقرير مبيعات الموظفين"
 }

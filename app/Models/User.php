@@ -63,4 +63,16 @@ class User extends Authenticatable implements  HasAvatar
     {
         return $this->type === 'admin';
     }
+
+    //order count
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    //orders_count
+    public function getOrdersCountAttribute()
+    {
+        return $this->orders->count();
+    }
 }
