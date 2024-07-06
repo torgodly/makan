@@ -44,8 +44,12 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
                     ->translateLabel()
+                    ->options([
+                        'admin' => 'Admin',
+                        'user' => 'User',
+                    ])
                     ->columnSpanFull()
                     ->required()
             ]);
