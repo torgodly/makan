@@ -42,6 +42,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->translateLabel()
                     ->email()
+                    ->unique('users', 'email')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('type')
