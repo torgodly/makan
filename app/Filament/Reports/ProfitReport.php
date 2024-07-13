@@ -97,6 +97,7 @@ class ProfitReport extends Report
         // Query to get the order items data with the applied date range filter
         $orderItems = OrderItem::select([
             'product_id',
+            //use form to get the products range
             DB::raw('SUM(quantity) as total_quantity'),
             DB::raw('SUM(order_items.quantity * products.cost) as total_cost'),
             DB::raw('SUM(order_items.quantity * products.price) as total_price')
@@ -104,7 +105,7 @@ class ProfitReport extends Report
             ->join('products', 'order_items.product_id', '=', 'products.id')
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             // Apply the date range filter to the orders.created_at field
-
+            ->whereBetween('orders.created_at', [$from, $to])
             ->groupBy('product_id')
             ->with('product') // eager load product details
             ->get();
