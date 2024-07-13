@@ -18,6 +18,7 @@ class CreateOrder extends CreateRecord
 
         $data['order_number'] = 'Invoice-' . Str::PadLeft(Order::query()->count() + 1, 7, '0');
         $data['user_id'] = auth()->id();
+//        dd($data);
 
         return $data;
     }

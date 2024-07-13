@@ -53,8 +53,8 @@
                                     <tr>
                                         <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->product->name}}</td>
                                         <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->quantity}}</td>
-                                        <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->product->price}}</td>
-                                        <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->product->price * $item->quantity}}</td>
+                                        <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->price}}</td>
+                                        <td class="py-2 px-4 border-b text-neutral-950 text-right">{{$item->price * $item->quantity}}</td>
                                     </tr>
 
                                 @endforeach
@@ -68,12 +68,23 @@
 
             <section class="flex justify-between flex-row-reverse mt-5">
                 <div class="text-right">
-                    <p class="text-lg font-bold">المجموع الفرعي: {{$order->total_price + $order->discount . ' د.ل'}}</p>
-                    <p class="text-lg font-bold">الخصم: {{$order->discount . ' د.ل'}}</p>
-                    <p class="text-xl font-bold">الإجمالي: {{$order->total_price . ' د.ل'}}</p>
-                    <p class="text-lg font-bold">المدفوع: {{$order->paid . ' د.ل'}}</p>
-                    <p class="text-lg font-bold">المتبقي: {{$order->total_price - $order->paid . ' د.ل'}}</p>
+                    <p class="text-lg font-bold">
+                        المجموع الفرعي: {{ number_format($order->total_price + $order->discount, 2) . ' د.ل' }}
+                    </p>
+                    <p class="text-lg font-bold">
+                        الخصم: {{ number_format($order->discount, 2) . ' د.ل' }}
+                    </p>
+                    <p class="text-xl font-bold">
+                        الإجمالي: {{ number_format($order->total_price, 2) . ' د.ل' }}
+                    </p>
+                    <p class="text-lg font-bold">
+                        المدفوع: {{ number_format($order->paid, 2) . ' د.ل' }}
+                    </p>
+                    <p class="text-lg font-bold">
+                        المتبقي: {{ number_format($order->total_price - $order->paid, 2) . ' د.ل' }}
+                    </p>
                 </div>
+
 
                 <div class="text-left w-1/2 flex justify-center">
                     <p class="text-base ">الختم والتوقيع</p>

@@ -16,6 +16,7 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
     public static function getNavigationGroup(): ?string
     {
         return __('Management');
@@ -68,7 +69,11 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->translateLabel()
-                ->badge(),
+                    ->badge(),
+                Tables\Columns\ToggleColumn::make('active')
+                    ->label('Active')
+                    ->translateLabel()
+                    ->translateLabel()
             ])
             ->filters([
                 //
@@ -77,9 +82,9 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+//                Tables\Actions\BulkActionGroup::make([
+//                    Tables\Actions\DeleteBulkAction::make(),
+//                ]),
             ]);
     }
 

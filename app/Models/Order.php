@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Filament\Resources\OrderResource\Pages\ListOrders;
 use App\Forms\Components\ViewPrice;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Grid;
@@ -130,11 +129,11 @@ class Order extends Model
                                 TextEntry::make('product.name')
                                     ->label('Product')
                                     ->translateLabel(),
-                                TextEntry::make('product.price')
+                                TextEntry::make('price')
                                     ->label('Price')
                                     ->translateLabel(),
                                 TextEntry::make('quantity')->label('Quantity')->translateLabel(),
-                                TextEntry::make('total_price')->default(fn($record) => $record->product->price * $record->quantity)
+                                TextEntry::make('total_price')->default(fn($record) => $record->price * $record->quantity)
                                     ->label('Total Price')
                                     ->translateLabel(),
                             ])->columns(4)
@@ -292,6 +291,12 @@ class Order extends Model
                                 ->readOnly()
 //                                    ->disabled()
                             ,
+                            TextInput::make('price')
+                                ->label('Unit Price')
+                                ->translateLabel()
+                                ->hidden()
+
+                            ,
                             TextInput::make('quantity')
                                 ->translateLabel()
                                 ->required()
@@ -334,49 +339,51 @@ class Order extends Model
     }
 
     //items
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
 
-    //product
     public function product()
     {
         return $this->hasManyThrough(Product::class, OrderItem::class, 'product_id', 'id', 'id', 'order_id');
     }
 
+    //product
 
-    //user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    //total_price
+
+    //user
+
     public function getTotalPriceAttribute()
     {
         return $this->items->sum(function ($item) {
-                return $item->quantity * $item->product->price;
+                return $item->quantity * $item->price;
             }) - $this->discount;
     }
 
-    //payments
+    //total_price
+
     public function payments()
     {
         return $this->hasMany(OrderPayment::class);
     }
 
-    //payment need to be paid
+    //payments
+
     public function getPaymentNeedToBePaidAttribute()
     {
         return round($this->total_price - $this->payments->sum('amount'), 2);
     }
 
-    //paid
+    //payment need to be paid
+
     public function getPaidAttribute()
     {
         return $this->payments->sum('amount');
     }
+
+    //paid
 
     public function getMonthlyProductQuantities()
     {
@@ -401,5 +408,10 @@ class Order extends Model
         }
 
         return $productQuantities;
+    }
+
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

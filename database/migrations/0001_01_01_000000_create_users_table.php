@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             //type enum ('user', 'admin')
             $table->enum('type', ['user', 'admin'])->default('user');
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
