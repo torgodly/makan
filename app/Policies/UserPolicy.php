@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 
-class CustomerPolicy
+class UserPolicy
 {
     /**
      * Determine if the given user can view any customers.
@@ -14,7 +14,7 @@ class CustomerPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -25,7 +25,7 @@ class CustomerPolicy
      */
     public function view(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -36,7 +36,7 @@ class CustomerPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -47,7 +47,7 @@ class CustomerPolicy
      */
     public function update(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -58,7 +58,7 @@ class CustomerPolicy
      */
     public function delete(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -69,7 +69,7 @@ class CustomerPolicy
      */
     public function restore(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 
     /**
@@ -80,6 +80,6 @@ class CustomerPolicy
      */
     public function forceDelete(User $user)
     {
-        return true;
+        return $user->is_admin;
     }
 }

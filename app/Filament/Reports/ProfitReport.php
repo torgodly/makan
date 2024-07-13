@@ -3,13 +3,11 @@
 namespace App\Filament\Reports;
 
 use App\Models\OrderItem;
-use App\Models\User;
 use EightyNine\Reports\Components\Body;
 use EightyNine\Reports\Components\Footer;
 use EightyNine\Reports\Components\Header;
 use EightyNine\Reports\Components\Text;
 use EightyNine\Reports\Report;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -19,16 +17,18 @@ class ProfitReport extends Report
 {
     public ?string $heading = "Report";
 
-     public static function getNavigationLabel(): string
-     {
-         return __("Profit Report");
-     }
+    public static function getNavigationLabel(): string
+    {
+        return __("Profit Report");
+    }
 
 
     public function getHeading(): string
     {
         return __("Profit Report");
     }
+
+
 
 
     // public ?string $subHeading = "A great report";
