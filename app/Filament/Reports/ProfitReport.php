@@ -15,7 +15,8 @@ use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
 
 class ProfitReport extends Report
 {
-    public ?string $heading = "Report";
+//    public ?string $heading = "Report";
+
 
     public static function getNavigationLabel(): string
     {
@@ -28,10 +29,6 @@ class ProfitReport extends Report
         return __("Profit Report");
     }
 
-
-
-
-    // public ?string $subHeading = "A great report";
 
     public function header(Header $header): Header
     {
@@ -142,5 +139,7 @@ class ProfitReport extends Report
                     ->placeholder("Select a date range")
             ]);
     }
+
+
 
 }
