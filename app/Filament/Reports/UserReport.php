@@ -22,6 +22,10 @@ class UserReport extends Report
         return __("User Sales Report");
     }
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->can('viewAny', \App\Models\User::class), 403, 'You are not authorized to view this page.');
+    }
 
 
     public function header(Header $header): Header

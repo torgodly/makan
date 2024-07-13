@@ -18,6 +18,9 @@ class CustomReportsPlugin extends ReportsPlugin
                 if ($title == 'User Report') {
                     return NavigationItem::make($report->getTitle())
                         ->label('تقرير الموظف')
+                        ->visible(function () {
+                            return auth()->user()->can('viewAny', \App\Models\User::class);
+                        })
                         ->url(function () use ($report) {
                             return $report->getUrl();
                         })
@@ -25,6 +28,9 @@ class CustomReportsPlugin extends ReportsPlugin
                 } else {
                     return NavigationItem::make($report->getTitle())
                         ->label('تقرير الأرباح')
+                        ->visible(function () {
+                            return auth()->user()->can('viewAny', \App\Models\User::class);
+                        })
                         ->url(function () use ($report) {
                             return $report->getUrl();
                         })

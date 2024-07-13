@@ -17,12 +17,15 @@ class ProfitReport extends Report
 {
 //    public ?string $heading = "Report";
 
-
     public static function getNavigationLabel(): string
     {
         return __("Profit Report");
     }
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->can('viewAny', \App\Models\User::class), 403, 'You are not authorized to view this page.');
+    }
 
     public function getHeading(): string
     {
@@ -139,7 +142,6 @@ class ProfitReport extends Report
                     ->placeholder("Select a date range")
             ]);
     }
-
 
 
 }
