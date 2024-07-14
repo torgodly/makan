@@ -104,7 +104,15 @@ class Order extends Model
                                         ->required()
                                 ])
                                 ->action(function (array $data, Order $record) {
-
+                                    if ($record->payment_need_to_be_paid > 0 && $data['status'] === 'Finished') {
+                                        Notification::make()
+                                            ->danger()
+                                            ->title(__('Payment Required'))
+                                            ->icon('tabler-credit-card')
+                                            ->body(__('The order cannot be finished until the payment is completed.'))
+                                            ->send();
+                                        return;
+                                    }
                                     $record->update($data);
                                     Notification::make()
                                         ->title(__('Status Changed'))

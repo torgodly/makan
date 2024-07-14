@@ -55,5 +55,9 @@
     "Top product": "المنتج الأعلى مبيعا",
     "Top product sold": "المنتج الأعلى مبيعا",
     "Active": "نشط",
-    "Your account is not active. Please contact your administrator.": "حسابك غير نشط. الرجاء التواصل مع المدير"
+    "Your account is not active. Please contact your administrator.": "حسابك غير نشط. الرجاء التواصل مع المدير",
+    "Payment Required": "دفعات مطلوبه",
+    "The order cannot be finished until the payment is completed.": "لا يمكن إنهاء الطلب حتى يتم الدفع",
+    "The status has been changed successfully.": "تم تغيير الحالة بنجاح",
+    "Status Changed": "تم تغيير الحالة"
 }
