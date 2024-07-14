@@ -27,6 +27,8 @@ class Customer extends Model
             TextInput::make('email')
                 ->translateLabel()
                 ->email()
+                ->required()
+                ->unique('customers', 'email', ignoreRecord: true)
                 ->maxLength(255),
             TextInput::make('phone')
                 ->translateLabel()

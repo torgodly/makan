@@ -39,7 +39,8 @@ class CustomLogin extends BaseLogin
         }
 
         if (!$user->isActive()) {
-
+            Filament::auth()->logout();
+            $this->throwAccountNotActiveException();
         }
         session()->regenerate();
 

@@ -43,7 +43,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->translateLabel()
                     ->email()
-                    ->unique('users', 'email')
+                    ->unique('users', 'email', ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('type')
@@ -72,6 +72,7 @@ class UserResource extends Resource
                     ->badge(),
                 Tables\Columns\ToggleColumn::make('active')
                     ->label('Active')
+                    ->disabled(fn ($record) => $record->is(auth()->user()))
                     ->translateLabel()
                     ->translateLabel()
             ])

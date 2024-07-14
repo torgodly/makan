@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Reports\CustomReportsPlugin;
+use App\Providers\Auth\CustomLogin;
 use EightyNine\Reports\ReportsPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 CustomReportsPlugin::make(),
             ])
-            ->login()
+            ->login(CustomLogin::class)
             ->plugin(
                 BreezyCore::make()
                     ->myProfile()
